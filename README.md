@@ -11,5 +11,6 @@ First you will need to clone it (`git clone https://github.com/tomoakley/trayio-
 - There is a console warning from React - this is due to how I have generated the room tiles. I used the Lodash.fill method to fill an array of rows, where each row contains the number of tiles specified as the x co-ordinate of the room size. However, the fill method has no iterable value, which I could use as the important `key` value to assist in React's change detection. I can change how these tiles are generated if necessary.
 - The design is quite bad, sorry. I chose to focus on the JavaScript and functionality side of the application rather than the CSS/aesthetics/UX
 - In some places the code is a little rough, sorry. I hope you understand I had limited time to work on this and would implement some further linters to improve the code quality. Also, I would chose to implement either Flow.js or TypeScript for better type-checking.
+- The error checking for the initial setup of the room, robot and dirt is quite poor. I would endeavour to improve this and stop some actions getting through to Redux, instead using more client/browser validation
 
 I hope it's good enough! Thank you for taking the time to evaluate my code.

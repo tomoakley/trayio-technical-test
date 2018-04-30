@@ -41,7 +41,10 @@ class Home extends React.Component {
       position: PropTypes.arrayOf(PropTypes.number),
       error: PropTypes.string
     }),
-    dirtPositions: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    dirt: PropTypes.shape({
+      positions: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+      error: PropTypes.string
+    }),
     room: PropTypes.shape({
       size: PropTypes.arrayOf(PropTypes.number),
       error: PropTypes.string
@@ -59,6 +62,8 @@ class Home extends React.Component {
     } = this.props;
     if (!_isEqual(nextProps.room.size, roomSize) && nextProps.room.size[0] > 0 && nextProps.room.size[1] > 0) {
       this.props.generateDirt(nextState.dirtNumber);
+    } else if (!_isEqual(this.state.dirtNumber, nextState.dirtNumber)) {
+      this.props.generateDirt(nextState.dirtNumber)
     }
   }
 
@@ -80,8 +85,8 @@ class Home extends React.Component {
       <form onSubmit={this.onSetupSubmit}>
         <InputGroup>
           <label>Set Room Size (x and y):</label>
-          <Input type="number" name="size-x" />
-          <Input type="number" name="size-y" />
+          <Input type="number" name="size-x" defaultValue="5" />
+          <Input type="number" name="size-y" defaultValue="5" />
           { this.props.room.error ? <Error>{this.props.room.error}</Error> : null }
         </InputGroup>
         <InputGroup>
@@ -91,7 +96,8 @@ class Home extends React.Component {
         </InputGroup>
         <InputGroup>
           <label>Number of patches of dirt:</label>
-          <Input type="number" name="dirt" />
+          <Input type="number" name="dirt" defaultValue="5" />
+          { this.props.dirt.error ? <Error>{this.props.dirt.error}</Error> : null }
         </InputGroup>
         <InputGroup>
           <button type="submit">Generate</button>
@@ -106,11 +112,11 @@ class Home extends React.Component {
         <Room
           size={this.props.room.size}
           robotPosition={this.props.robot.position}
-          dirtPositions={this.props.dirtPositions}
+          dirtPositions={this.props.dirt.positions}
           cleanDirt={this.props.cleanDirt}
         />
         <DirectionalPad moveRobot={this.props.moveRobot} />
-        <Status dirtPositions={this.props.dirtPositions}
+        <Status dirtPositions={this.props.dirt.positions}
                 robotPosition={this.props.robot.position}
                 roomSize={this.props.room.size}
                 setRoomSize={this.props.setRoomSize}
@@ -120,9 +126,10 @@ class Home extends React.Component {
   }
 
   render() {
-    const { room: { size: roomSize } } = this.props;
+    const { room: { size: roomSize },
+            dirt: { positions: dirtPositions } } = this.props;
     return (
-      roomSize[0] > 0 && roomSize[1] > 0 ?
+      roomSize[0] > 0 && roomSize[1] > 0 && dirtPositions.length  ?
         this.renderRoom() :
         this.renderSetup()
     );
@@ -134,12 +141,16 @@ const mapStateToProps = (state) => {
   return {
     robot: {
       position: state.robot.position,
+      error: state.robot.error
     },
     room: {
       size: state.room.size || [0, 0],
       error: state.room.error
     },
-    dirtPositions: state.dirt.positions
+    dirt: {
+      positions: state.dirt.positions,
+      error: state.dirt.error
+    }
   };
 };
 

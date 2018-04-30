@@ -46,11 +46,11 @@ function generateDirtSuccess(positions) {
   }
 }
 
-function generateDirtFailure({ error }) {
+function generateDirtFailure(error) {
   return {
     type: GENERATE_DIRT_FAILURE,
     positions: [],
-    error
+    error: error.message
   }
 }
 
@@ -62,17 +62,20 @@ function cleanDirtSuccess(positions) {
   }
 }
 
-function cleanDirtFailure({ error }) {
+function cleanDirtFailure(error) {
   return {
     type: CLEAN_DIRT_FAILURE,
     positions: [],
-    error
+    error: error.message
   }
 }
 
 export function generateDirt(dirtToGenerate) {
   return (dispatch, getState) => {
     try {
+      if (dirtToGenerate < 1) {
+        throw new Error('Number of patches of dirt to generate cannot be less than 1');
+      }
       const {
         room: { size: roomSize },
         robot: { currentPosition: robotPosition }
