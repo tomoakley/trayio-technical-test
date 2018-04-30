@@ -73,13 +73,16 @@ function cleanDirtFailure(error) {
 export function generateDirt(dirtToGenerate) {
   return (dispatch, getState) => {
     try {
-      if (dirtToGenerate < 1) {
-        throw new Error('Number of patches of dirt to generate cannot be less than 1');
-      }
       const {
         room: { size: roomSize },
         robot: { currentPosition: robotPosition }
       } = getState();
+      if (dirtToGenerate < 1) {
+        throw new Error('Number of patches of dirt to generate cannot be less than 1');
+      }
+      if (dirtToGenerate > roomSize[0] * roomSize[1]) {
+        throw new Error('Number of patches of dirt to generate cannot be larger than area of room');
+      }
       let positions = [];
       while(positions.length < dirtToGenerate) {
         const position = [_random(0, roomSize[0] - 1), _random(0, roomSize[1] - 1)];
