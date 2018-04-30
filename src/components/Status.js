@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _isEqual from 'lodash/isEqual';
 import _toNumber from 'lodash/toNumber';
-import _forEach from 'lodash/forEach';
 
 const Line = styled.div`
   margin-top: 15px;
@@ -13,7 +12,6 @@ export default class Status extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       roomSize: props.roomSize
     };

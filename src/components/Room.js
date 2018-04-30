@@ -7,7 +7,6 @@ import _clone from 'lodash/clone';
 import _map from 'lodash/map';
 import _compact from 'lodash/compact';
 import _isEqual from 'lodash/isEqual';
-import _random from 'lodash/random';
 import Robot from "./Robot";
 import Dirt from "./Dirt";
 
@@ -52,7 +51,6 @@ export default class Room extends React.Component {
     const rows = [];
     const tiles = _fill(new Array(this.props.size[1]), _fill(new Array(this.props.size[0]), <Tile />));
     const numberOfRows = tiles.length;
-    const numberOfTiles = this.props.size[0] * this.props.size[1];
     _forEach(tiles, (row, i) => {
       const rowContainsRobot = this.props.robotPosition[1] === numberOfRows - 1 - i;
       const rowContainsDirt = _map(this.props.dirtPositions, (dirt) => {
