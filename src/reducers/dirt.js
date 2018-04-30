@@ -70,14 +70,13 @@ function cleanDirtFailure({ error }) {
   }
 }
 
-export function generateDirt() {
+export function generateDirt(dirtToGenerate) {
   return (dispatch, getState) => {
     try {
       const {
         room: { size: roomSize },
         robot: { currentPosition: robotPosition }
       } = getState();
-      const dirtToGenerate = 5;
       let positions = [];
       while(positions.length < dirtToGenerate) {
         const position = [_random(0, roomSize[0] - 1), _random(0, roomSize[1] - 1)];

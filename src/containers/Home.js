@@ -30,6 +30,9 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      dirtNumber: 0
+    };
     this.onSetupSubmit = this.onSetupSubmit.bind(this);
   }
 
@@ -50,12 +53,12 @@ class Home extends React.Component {
     cleanDirt: PropTypes.func
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillUpdate(nextProps, nextState) {
     const {
       room: { size: roomSize }
     } = this.props;
     if (!_isEqual(nextProps.room.size, roomSize) && nextProps.room.size[0] > 0 && nextProps.room.size[1] > 0) {
-      this.props.generateDirt();
+      this.props.generateDirt(nextState.dirtNumber);
     }
   }
 
@@ -69,6 +72,7 @@ class Home extends React.Component {
       _toNumber(e.target['robot-x'].value),
       _toNumber(e.target['robot-y'].value)
     ]);
+    this.setState({ dirtNumber: _toNumber(e.target['dirt'].value) });
   }
 
   renderSetup() {
